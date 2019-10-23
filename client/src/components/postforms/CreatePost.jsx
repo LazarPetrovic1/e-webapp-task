@@ -9,22 +9,28 @@ function CreatePost(props) {
   const [post, setPost] = useState({
     postname: "",
     about: "",
-    // attendees: []
+    attendees: [],
+    date: "",
+    time: "",
+    capacity: ""
   });
 
   const {addPost, history} = props;
-  const {postname, about, attendees} = post;
+  const {postname, about, attendees, date, time, capacity} = post;
 
   const onChange = (e) => setPost({...post, [e.target.name]: e.target.value});
 
   const onSubmit = e => {
     e.preventDefault();
-    const formData = {postname, about};
+    const formData = {postname, about, date, time, capacity, attendees};
     addPost(formData);
     setPost({
       postname: "",
       about: "",
-      // attendees: []
+      attendees: [],
+      date: "",
+      time: "",
+      capacity: ""
     });
     M.toast({html: "Event added."});
     return history.push("/posts");
@@ -47,7 +53,7 @@ function CreatePost(props) {
               className="validate"
               required
             />
-            <label htmlFor="postname">Name of the event</label>
+          <label htmlFor="postname">Title</label>
           </div>
         </div>
         <div className="row">
@@ -60,7 +66,49 @@ function CreatePost(props) {
               value={about}
               required
             />
-            <label htmlFor="about">Describe the event</label>
+          <label htmlFor="about">Description</label>
+          </div>
+        </div>
+        <div className="row">
+          <div className="input-field col s12">
+            <input
+              name="date"
+              type="date"
+              style={{padding: "5px 10px"}}
+              onChange={onChange}
+              value={date}
+              className="validate"
+              required
+            />
+          <label htmlFor="about">Date</label>
+          </div>
+        </div>
+        <div className="row">
+          <div className="input-field col s12">
+            <input
+              name="time"
+              type="time"
+              style={{padding: "5px 10px"}}
+              onChange={onChange}
+              value={time}
+              className="validate"
+              required
+            />
+          <label htmlFor="about">Time</label>
+          </div>
+        </div>
+        <div className="row">
+          <div className="input-field col s12">
+            <input
+              name="capacity"
+              type="number"
+              style={{padding: "5px 10px"}}
+              onChange={onChange}
+              value={capacity}
+              className="validate"
+              required
+            />
+          <label htmlFor="about">Capacity</label>
           </div>
         </div>
         <button type="submit" className="btn waves-effect waves-light green darken-2 right white-text pulse">Make an event!</button>

@@ -18,7 +18,16 @@ router.post(
         .isEmpty(),
       check("about", "More information about the post is required.")
         .not()
-        .isEmpty()
+        .isEmpty(),
+      check("date", "You have to set a day of the gathering.")
+        .not()
+        .isEmpty(),
+      check("time", "You have to set the time of the event.")
+        .not()
+        .isEmpty(),
+      check("capacity", "You have to specify the number of people to join.")
+        .not()
+        .isEmpty(),
     ]
   ],
   async (req, res) => {
@@ -33,6 +42,9 @@ router.post(
       const newPost = new Post({
         postname: req.body.postname,
         about: req.body.about,
+        date: req.body.date,
+        time: req.body.time,
+        capacity: req.body.capacity,
         name: user.name,
         user: req.user.id
       });
@@ -117,7 +129,7 @@ router.delete("/:id", auth, async (req, res) => {
 // @route -- PUT -- api/posts/attend/:id
 // @desc -- -- Attend the event
 // @access -- -- Private
-router.put("/attend:id", auth, async (req, res) => {
+router.put("/attend/:id", auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -179,11 +191,17 @@ router.put("/unattend/:id", auth, async (req, res) => {
   }
 });
 
+// @route -- PUT -- api/posts/:id
+// @desc -- -- Update the event
+// @access -- -- Private
 router.put("/:id", auth, async (req, res) => {
   const {
     postname,
     about,
-    attendees
+    attendees,
+    time,
+    date,
+    capacity
   } = req.body;
 
   const postFields = {};
@@ -191,9 +209,13 @@ router.put("/:id", auth, async (req, res) => {
   if (postname) postFields.postname = postname;
   if (about) postFields.about = about;
   if (attendees) postFields.attendees = attendees;
+  if (time) postFields.time = time;
+  if (date) postFields.date = date;
+  if (capacity) postFields.capacity = capacity;
 
   try {
     let post = Post.findById(req.params.id);
+    // console.log("POST - backend", post);
     if (post) {
       post = await post.findOneAndUpdate(
         {user: req.user.id},
@@ -201,14 +223,13 @@ router.put("/:id", auth, async (req, res) => {
         {new: true}
       );
     }
-    // post = new Post(postFields);
+
     await post.save();
     return res.json(post);
   } catch (e) {
     console.error(e.message);
     res.status(500).send("Internal server error.");
   }
-})
-
+});
 
 module.exports = router;

@@ -1,88 +1,162 @@
-import React, { useEffect, useState, Fragment } from "react";
-import { Redirect, Link } from 'react-router-dom';
+import React, { useEffect, useState, Fragment, useCallback, useMemo } from "react";
+import { Link, withRouter } from 'react-router-dom';
 import { updatePost, getPost } from "../../actions/post";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import M from "materialize-css/dist/js/materialize.min.js";
 import Spinner from '../layout/Spinner';
+import ErrorBoundary from '../ErrorBoundary';
 
 function EditPost(props) {
   const {
-    addPost,
     getPost,
+    updatePost,
     post: {post, loading, posts},
     history,
     match
   } = props;
 
-  const [thisPost, setPost] = useState({
+  const [form, setForm] = useState({
     postname: "",
     about: "",
-    attendees: []
+    attendees: [],
+    date: "",
+    time: "",
+    capacity: ""
   });
 
-  useEffect(() => {
-    getPost(match.params.id);
 
-    setPost({
-      postname: loading || !post.postname ? "" : post.postname,
-      about: loading || !post.about ? "" : post.about,
-      attendees: loading || !post.attendees ? "" : post.attendees,
+  const postGetter = useCallback(() => getPost(match.params.id), [getPost, match.params.id]);
+  useMemo(() => {
+    postGetter();
+    setForm({
+      postname: loading || !post ? "" : post.postname,
+      about: loading || !post ? "" : post.about,
+      attendees: loading || !post ? "" : post.attendees,
+      date: loading || !post ? "" : post.date,
+      time: loading || !post ? "" : post.time,
+      capacity: loading || !post ? "" : post.capacity
     });
-  }, [loading, getPost]);
+  }, [postGetter]);
+
+  useEffect(() => {
+      setForm({
+        postname: loading || !post ? "" : post.postname,
+        about: loading || !post ? "" : post.about,
+        attendees: loading || !post ? "" : post.attendees,
+        date: loading || !post ? "" : post.date,
+        time: loading || !post ? "" : post.time,
+        capacity: loading || !post ? "" : post.capacity
+    });
+    // console.log("POST", post);
+    // console.log("FORM", form);
+  }, [post]);
 
   const {
     postname,
     about,
-    attendees
-  } = thisPost;
+    attendees,
+    date,
+    time,
+    capacity
+  } = form;
 
-  const onChange = (e) => setPost({...thisPost, [e.target.name]: e.target.value});
+  const onChange = (e) => setForm({...form, [e.target.name]: e.target.value});
 
   const onSubmit = e => {
     e.preventDefault();
-    updatePost(thisPost, match.params.id);
+    updatePost(form, match.params.id);
+    // console.log("EDIT - THIS POST", form);
     M.toast({html: "Post updated."});
     history.push("/posts");
   };
 
-  return loading ? <Spinner /> : (
+  // console.log(form);
+
+  return !post || loading ? <Spinner /> : (
     <Fragment>
       <header className="post-form">
         <h1 className="center-align indigo-text darken-4">Retouch your venue</h1>
       </header>
-      <form onSubmit={onSubmit} className="container">
-        <div className="row">
-          <div className="input-field col s12">
-            <input
-              name="postname"
-              type="text"
-              value={postname}
-              style={{padding: "5px 10px"}}
-              onChange={onChange}
-              className="validate"
-              required
-            />
-            <label htmlFor="postname">Name of the event</label>
-          </div>
+      <ErrorBoundary>
+        <div className="container">
+          <form onSubmit={onSubmit}>
+            <div className="row">
+              <div className="input-field col s12">
+                <input
+                  name="postname"
+                  type="text"
+                  value={postname}
+                  placeholder="Title"
+                  style={{padding: "5px 10px"}}
+                  onChange={onChange}
+                  className="validate"
+                  required
+                  />
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <textarea
+                  name="about"
+                  cols="30"
+                  style={{height: "10rem", marginTop: "1em", fontFamily: "inherit", padding: "5px 10px"}}
+                  onChange={onChange}
+                  value={about}
+                  placeholder="Description"
+                  required
+                ></textarea>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input
+                  name="date"
+                  type="date"
+                  value={date}
+                  placeholder="Date"
+                  style={{padding: "5px 10px"}}
+                  onChange={onChange}
+                  className="validate"
+                  required
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input
+                  name="time"
+                  type="time"
+                  value={time}
+                  placeholder="Time"
+                  style={{padding: "5px 10px"}}
+                  onChange={onChange}
+                  className="validate"
+                  required
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input
+                  name="capacity"
+                  type="number"
+                  value={capacity}
+                  placeholder="Capacity"
+                  style={{padding: "5px 10px"}}
+                  onChange={onChange}
+                  className="validate"
+                  required
+                />
+              </div>
+            </div>
+            <button type="submit" className="btn waves-effect waves-light green darken-2 right white-text pulse">Update your event!</button>
+          </form>
+          <Link to="/posts" className="btn waves-effect waves-light green darken-2 white-text">Go back</Link>
         </div>
-        <div className="row">
-          <div className="input-field col s12">
-            <textarea
-              name="about"
-              cols="30"
-              style={{height: "10rem", marginTop: "1em", fontFamily: "inherit", padding: "5px 10px"}}
-              onChange={onChange}
-              value={about}
-              required
-            ></textarea>
-            <label htmlFor="about">Describe the event</label>
-          </div>
-        </div>
-        <button type="submit" className="btn waves-effect waves-light green darken-2 right white-text pulse">Update your event!</button>
-      </form>
+      </ErrorBoundary>
     </Fragment>
-  );
+  )
 }
 
 EditPost.propTypes = {
@@ -98,4 +172,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { getPost, updatePost }
-)(EditPost);
+)(withRouter(EditPost));

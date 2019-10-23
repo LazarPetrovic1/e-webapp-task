@@ -5,7 +5,8 @@ import {
   DELETE_POST,
   ADD_POST,
   GET_POST,
-  UPDATE_POST
+  UPDATE_POST,
+  CLEAR_POST
 } from "../actions/types";
 
 const initialState = {
@@ -32,6 +33,19 @@ export default function(state = initialState, action) {
         post: payload
       };
     case UPDATE_POST:
+      return {
+        ...state,
+        posts: state.posts.map(
+          post => post._id === payload._id ? payload : post
+        ),
+        loading: false
+      };
+    case CLEAR_POST:
+      return {
+        ...state,
+        post: {},
+        loading: false
+      };
     case ADD_POST:
       return {
         ...state,
@@ -59,6 +73,8 @@ export default function(state = initialState, action) {
         loading: false
       };
     default:
-      return state;
+      return {
+        ...state
+      };
   }
 }

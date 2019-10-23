@@ -8,6 +8,7 @@ import {
   UPDATE_POST,
   DELETE_POST,
   GET_POST,
+  CLEAR_POST
 } from "./types";
 
 // Get posts
@@ -28,6 +29,7 @@ export const getPosts = () => async dispatch => {
 export const attend = id => async dispatch => {
   try {
     const res = await axios.put(`/api/posts/attend/${id}`);
+    console.log(res.data);
 
     dispatch({ type: UPDATE_ATTENDANCE, payload: { id, attendees: res.data } });
   } catch (e) {
@@ -79,6 +81,7 @@ export const addPost = formData => async dispatch => {
     const res = await axios.post("/api/posts", formData, config);
 
     dispatch({ type: ADD_POST, payload: res.data });
+    dispatch({ type: CLEAR_POST })
     // dispatch(setAlert("The post has been created.", "success"));
   } catch (e) {
     dispatch({
@@ -96,12 +99,13 @@ export const updatePost = (formData, id) => async dispatch => {
       }
     };
 
-    const res = await axios.put(`/api/posts/${id}`);
+    const res = await axios.put(`/api/posts/${id}`, formData, config);
 
     dispatch({
       type: UPDATE_POST,
       payload: res.data
     });
+    dispatch({ type: CLEAR_POST })
   } catch (e) {
     dispatch({
       type: POST_ERROR,

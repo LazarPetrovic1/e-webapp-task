@@ -8,10 +8,10 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import CreatePost from './components/postforms/CreatePost';
 import PrivateRoute from './components/routing/PrivateRoute';
-import Post from './components/post/Post';
 import About from './components/layout/About';
 import PostList from './components/post/PostList';
 import EditPost from './components/postforms/EditPost';
+import PostItem from './components/post/PostItem';
 
 // Redux
 import { Provider } from "react-redux";
@@ -46,7 +46,7 @@ function App() {
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/create-post" component={CreatePost} />
             <PrivateRoute exact path="/edit-post/:id" component={EditPost} />
-            <PrivateRoute exact path="/post/:id" component={Post} />
+            <PrivateRoute exact path="/post/:id" component={PostItem} />
             <PrivateRoute exact path="/posts" component={PostList} />
           </Switch>
         </Fragment>

@@ -53,12 +53,26 @@ const Nav = (props) => {
             Your events
           </Link>
         </li>
+        <li className="divider"></li>
+        <li>
+          <a href="!#" onClick={logout}>
+            Logout
+          </a>
+        </li>
       </ul>
     </Fragment>
   ) : (
     <nav>
       <div className="nav-wrapper white">
         <Link to="/" className="brand-logo left black-text" style={{paddingLeft: '1em'}}>E.</Link>
+        <ul className="right" style={{paddingRight: '2em'}}>
+          <li className="black-text" style={{display: "block"}}>
+            <Link to="/login" style={{color: "black"}}>Login</Link>
+          </li>
+          <li className="black-text" style={{display: "block"}}>
+            <Link to="/register" style={{color: "black"}}>Sign up</Link>
+          </li>
+        </ul>
       </div>
     </nav>
   );
