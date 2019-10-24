@@ -27,10 +27,14 @@ function PostList(props) {
             <h2 className="center-align">Sorry, no posts to show</h2>
           </Fragment>
         )}
+        <Link
+          to="/create-post"
+          className="btn-floating btn-large indigo darken-4 right"
+          style={{marginBottom: "2em"}}
+        >
+          <i className="large material-icons">add</i>
+        </Link>
       </section>
-      <Link to="/create-post" className="btn waves-effect waves-light green darken-2 right white-text" style={{margin: "2rem"}}>
-        Create an event!
-      </Link>
     </Fragment>
   );
 }

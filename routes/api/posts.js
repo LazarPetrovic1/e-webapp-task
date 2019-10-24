@@ -141,7 +141,9 @@ router.put("/attend/:id", auth, async (req, res) => {
       return res.status(400).json({ msg: "You are already attending the event." });
     }
 
-    post.attendees.unshift({user: req.user.id});
+    const user = await User.findById(req.user.id);
+
+    post.attendees.unshift({user: req.user.id, name: user.name});
 
     await post.save();
 

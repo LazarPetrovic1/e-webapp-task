@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import { getPost, attend, unattend } from "../../actions/post";
 import M from "materialize-css/dist/js/materialize.min.js";
 import Spinner from '../layout/Spinner';
-import Attendee from './Attendee';
 
 function PostItem(props) {
   const {
@@ -66,16 +65,6 @@ function PostItem(props) {
                 )
               }
             </div>
-          </div>
-            <div className="card">
-              <h4 style={{padding: "1em"}}>Attendees</h4>
-              {
-                post.attendees.length <= 0 ? (
-                  <p className="grey-text lighten-1 center-align" style={{padding: "1em 0"}}>Unfortunately, nobody is attending your event.</p>
-                ) : post.attendees.map(
-                  (attendee, i) => <Attendee attendee={attendee} key={i} />
-              )
-            }
           </div>
           <Link to="/posts">Go back</Link>
       </div>

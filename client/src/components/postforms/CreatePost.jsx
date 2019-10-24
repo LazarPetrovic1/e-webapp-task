@@ -53,7 +53,7 @@ function CreatePost(props) {
               className="validate"
               required
             />
-          <label htmlFor="postname">Title</label>
+          <label htmlFor="postname" style={{padding: "5px 10px"}}>Title</label>
           </div>
         </div>
         <div className="row">
@@ -66,7 +66,7 @@ function CreatePost(props) {
               value={about}
               required
             />
-          <label htmlFor="about">Description</label>
+          <label htmlFor="about" style={{padding: "5px 10px"}}>Description</label>
           </div>
         </div>
         <div className="row">
