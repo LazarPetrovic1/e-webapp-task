@@ -2,7 +2,6 @@ import React, { useState, Fragment } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { addPost } from "../../actions/post";
-import {Redirect} from 'react-router-dom';
 import M from "materialize-css/dist/js/materialize.min.js";
 
 function CreatePost(props) {

@@ -2,9 +2,9 @@ import React, { Fragment, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { setAlert } from "../../actions/alert";
 import { register } from "../../actions/auth";
 import Spinner from '../layout/Spinner';
+import M from "materialize-css/dist/js/materialize.min.js";
 
 function Register(props) {
   const [formData, setFormData] = useState({
@@ -17,7 +17,8 @@ function Register(props) {
     seepass2: false
   });
 
-  const { setAlert, register, isAuthenticated, loading } = props;
+
+  const { register, isAuthenticated, loading } = props;
   const { fname, lname, email, password, password2, seepass1, seepass2 } = formData;
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,7 +27,7 @@ function Register(props) {
     e.preventDefault();
     let name = `${fname} ${lname}`;
     if (password !== password2) {
-      setAlert("Passwords do not match.", "danger");
+      M.toast({html: "Passwords do not match."})
     } else {
       register({ name, email, password });
     }
@@ -40,6 +41,9 @@ function Register(props) {
     <Fragment>
       <h1 className="center-align">Get started for absolutely free.</h1>
       <p className="center-align">Enter your details below.</p>
+      {
+        password !== password2 && <p className="red-text darken-4 center-align" style={{fontSize: "2em", fontWeight: "bolder"}}>Passwords do not match.</p>
+      }
       <form onSubmit={onSubmit} className="container">
         <div className="row">
           <div className="input-field col s12">
@@ -83,7 +87,6 @@ function Register(props) {
 }
 
 Register.propTypes = {
-  setAlert: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   loading: PropTypes.bool.isRequired
@@ -96,5 +99,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { setAlert, register }
+  { register }
 )(Register);

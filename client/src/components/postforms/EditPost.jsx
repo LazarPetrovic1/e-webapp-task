@@ -11,6 +11,7 @@ function EditPost(props) {
   const {
     getPost,
     updatePost,
+    // eslint-disable-next-line
     post: {post, loading, posts},
     history,
     match
@@ -25,7 +26,6 @@ function EditPost(props) {
     capacity: ""
   });
 
-
   const postGetter = useCallback(() => getPost(match.params.id), [getPost, match.params.id]);
   useMemo(() => {
     postGetter();
@@ -37,6 +37,7 @@ function EditPost(props) {
       time: loading || !post ? "" : post.time,
       capacity: loading || !post ? "" : post.capacity
     });
+    // eslint-disable-next-line
   }, [postGetter]);
 
   useEffect(() => {
@@ -48,8 +49,7 @@ function EditPost(props) {
         time: loading || !post ? "" : post.time,
         capacity: loading || !post ? "" : post.capacity
     });
-    // console.log("POST", post);
-    // console.log("FORM", form);
+    // eslint-disable-next-line
   }, [post]);
 
   const {

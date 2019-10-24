@@ -1,10 +1,9 @@
-import React, { useEffect, useState, Fragment, useCallback, useMemo } from "react";
+import React, { useEffect, Fragment } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import { connect } from "react-redux";
 import { getPost, attend, unattend } from "../../actions/post";
-import M from "materialize-css/dist/js/materialize.min.js";
 import Spinner from '../layout/Spinner';
 
 function PostItem(props) {
@@ -20,22 +19,8 @@ function PostItem(props) {
   useEffect(() => {
     getPost(match.params.id);
     // console.log(props);
-  }, [getPost]);
-
-  const postGetter = useCallback(() => getPost(match.params.id), [getPost, match.params.id]);
-  useMemo(() => {
-    postGetter();
-  }, [postGetter]);
-  // console.log(post);
-
-  const containsObject = (obj, list) => {
-    for (const item of list) {
-      if (item._id === obj.user) {
-        return true;
-      }
-    }
-    return false;
-  }
+    // eslint-disable-next-line
+  }, [getPost, match.params.id]);
 
   return loading || !post ? <Spinner /> : (
     <Fragment>

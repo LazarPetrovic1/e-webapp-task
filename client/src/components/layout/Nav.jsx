@@ -23,6 +23,7 @@ const Nav = (props) => {
           <Link to="/" className="brand-logo left black-text" style={{paddingLeft: '1em'}}>E.</Link>
           <ul className="right" style={{paddingRight: '2em'}}>
             <li className="black-text">
+              {/* eslint-disable-next-line */}
               <a href="#" data-target="mobile-demo" className="sidenav-trigger" style={{display: "block"}}>
                 <UserBadge  />
               </a>

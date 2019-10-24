@@ -8,19 +8,20 @@ import {Link} from 'react-router-dom';
 
 function PostList(props) {
   const {getPosts, post} = props;
-  const {posts, loading} = post;
+  // const {posts, loading} = post;
 
   useEffect(() => {
     getPosts();
+    // console.log(props);
   }, [getPosts]);
 
-  return loading ? (
+  return post.loading || !post.posts ? (
     <Spinner />
   ) : (
     <Fragment>
       <h1 className="indigo-text center-align darken-4">Posts</h1>
       <section className="container">
-        {posts.length > 0 ? posts.map(post => (
+        {post.posts.length > 0 ? post.posts.map(post => (
           <Post key={post._id} post={post} />
         )) : (
           <Fragment>

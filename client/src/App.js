@@ -3,7 +3,6 @@ import React, {Fragment, useEffect} from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Nav from "./components/layout/Nav";
-import Hey from './Hey';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import CreatePost from './components/postforms/CreatePost';
@@ -12,6 +11,7 @@ import About from './components/layout/About';
 import PostList from './components/post/PostList';
 import EditPost from './components/postforms/EditPost';
 import PostItem from './components/post/PostItem';
+import Dashboard from './components/dashboard/Dashboard';
 
 // Redux
 import { Provider } from "react-redux";
@@ -40,7 +40,6 @@ function App() {
         <Fragment>
           <Nav />
           <Switch>
-            <Route exact path="/" component={Hey} />
             <Route exact path="/about" component={About} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
@@ -48,6 +47,7 @@ function App() {
             <PrivateRoute exact path="/edit-post/:id" component={EditPost} />
             <PrivateRoute exact path="/post/:id" component={PostItem} />
             <PrivateRoute exact path="/posts" component={PostList} />
+            <PrivateRoute exact path="/dashboard" component={Dashboard} />
           </Switch>
         </Fragment>
       </Router>

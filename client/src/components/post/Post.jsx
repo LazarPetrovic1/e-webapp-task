@@ -1,6 +1,6 @@
 import React, {Fragment} from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import Moment from "react-moment";
 import { connect } from "react-redux";
 import { attend, unattend, deletePost } from "../../actions/post";
@@ -13,10 +13,12 @@ function Post(props) {
     attend,
     unattend,
     deletePost,
-    post: {_id, postname, about, name, user, attendees, date, time, capacity}
+    post
   } = props;
 
-  return (
+  const {_id, postname, about, name, user, attendees, date, time, capacity} = post;
+
+  return !post ? <h1>Loading</h1> : (
     <Fragment>
       <div className="card">
         {
@@ -43,7 +45,7 @@ function Post(props) {
                 )
               }
               {
-                auth.user._id !== user && attendees.find(el => JSON.stringify(el.user) === JSON.stringify(auth.user._id)) ? (
+                auth.user._id === user ? null : auth.user._id !== user && attendees.find(el => JSON.stringify(el.user) === JSON.stringify(auth.user._id)) ? (
                   <button className="red darken-4" style={{margin: "1rem", padding: "0 2rem", outline: "none", border: "none", letterSpacing: "1px", fontWeight: "bold", color: "white"}} onClick={() => unattend(_id)}>LEAVE</button>
                 ) : (
                   <button className="green darken-4" style={{margin: "1rem", padding: "0 2rem", outline: "none", border: "none", letterSpacing: "1px", fontWeight: "bold", color: "white"}} onClick={() => attend(_id)}>JOIN</button>
@@ -82,4 +84,4 @@ export default connect(mapStateToProps, {
   attend,
   unattend,
   deletePost
-})(Post);
+})(withRouter(Post));
